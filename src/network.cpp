@@ -9,7 +9,7 @@ bool Network::add_link	(const size_t & a,const size_t & b ) {
 	if ((a==b) or (a>= (size()) ) or (b>= ( size() ) ) ) { return false; }
 	
 	for (auto itr = links.begin(); itr != links.end(); itr++)   {  
-        if (((itr -> first == a) and (itr -> second == b)) and ((itr -> first == b) and (itr -> second == a)) )
+        if (((itr -> first == a) and (itr -> second == b)) or ((itr -> first == b) and (itr -> second == a)) )
         { return false; }
 	}
              
@@ -44,35 +44,32 @@ size_t Network::random_connect	(const double &  mean_deg)	{
 	size_t deg(0);
 	std::vector<int> tab_uniform(1);
 	size_t compteur(0);
+	size_t count (0);
+	bool stay_in_the_loop(true);
 	
-	/*std::random_device rd{};
-	std::mt19937 generator(rd());
-	std::uniform_int_distribution<>uniform(0, size()-1); */
-	
-	for (size_t i(0) ; i< size() -1 ; ++i) { // -1
+	for (size_t i(0) ; i< size(); ++i) {
 		
 	deg = RNG.poisson(mean_deg);
 		
-		// if (deg > values.size() -1) { 
-			//throw (std::runtime_error("Network::random_connect : degré supérieur au nombre de liens qu'on peut créer") ) ; } //
+		 if (deg > size() -1) { deg = size() - 1; }
 			
-		//else { 
-			//int link(deg - degree(i) );  //POURQUOI
-			for (size_t j(0); j< deg ; ++j) {
+		for (size_t j(0); j< deg ; ++j) {
 			
 			do {
 				 RNG.uniform_int(tab_uniform, 0, size() -1 ) ; // peut prendre des valeurs entre 0 et size() -1 (indices du
-				 // tableau de values)
-				
+																// tableau de values)
+				++ count;
+				if (add_link(i, tab_uniform[0]) ) { 
+				    ++compteur; 
+					stay_in_the_loop = false;}
 				 }
 			
-			 while (not add_link(i, tab_uniform[0]) ) ;   // uniform(generator)//continue
+			 while ((stay_in_the_loop) and (count < size() ) ) ; 
 			 // on accède au premier élément du tableau de taille 1 car la fonction de random, uniform_int remplit un tableau de
 			 // int par une distribution uniforme et ne retourne pas simplement un int. C'est pourquoi on doit utiliser un tableau
-			 ++compteur;
-			 
-	 }
- }
+			
+		}
+	}
 	 
 	 return compteur;
 	 
