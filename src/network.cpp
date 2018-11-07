@@ -38,7 +38,7 @@ std::vector<size_t> Network::neighbors	(const size_t & a )const {
 }
 
 
-size_t Network::random_connect	(const double &  mean_deg)	{
+size_t Network::random_connect (const double &  mean_deg)	{
 
 	links.clear();
 	size_t deg(0);
@@ -70,8 +70,7 @@ size_t Network::random_connect	(const double &  mean_deg)	{
 			
 		}
 	}
-	 
-	 return compteur;
+	  return compteur;
 	 
 }
 
@@ -90,7 +89,7 @@ void Network::resize(const size_t & new_size) {
 size_t Network::set_values	(const std::vector< double > & v) {
 	
 
-	if (v.size() <= values.size() ) {
+	if (v.size() <= size() ) {
 		for (size_t i(0); i< v.size() ; ++i) {
 		values[i] = v[i];
 		}
@@ -98,10 +97,10 @@ size_t Network::set_values	(const std::vector< double > & v) {
 		
 	}
 	
-	if (v.size() > values.size() ) {
-		for (size_t i(0); i< values.size() ; ++i) {
+	if (v.size() > size() ) {
+		for (size_t i(0); i< size() ; ++i) {
 		values[i] = v[i]; }
-		return values.size(); 
+		return size(); 
 	}
 	
 	return 0;
@@ -128,7 +127,7 @@ return sorted_tab;
 
 
 double Network::value(const size_t & n	) const {
-	if (n < values.size() ) {
+	if (n < size() ) {
 	return values[n]; } // vérifier que le numero est bien dans la size du tableau
 }
 
